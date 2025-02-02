@@ -6,7 +6,7 @@
         },
         "Beta": {
             "path": "V:/Epic/PublicBeta",
-            "extra_args": ""
+            "extra_args": " "
         }
     }
 }
