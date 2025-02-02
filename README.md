@@ -2,6 +2,7 @@
 
 This tool allows you to build any mod you created inside the "The Bus Modding Editor" without opening it.
 
+[Download here](https://github.com/ByteBitter/TheBusModBuilder/releases/tag/V001)
 
 ## DISCLAIMER - USE AT YOUR OWN RISK
 
