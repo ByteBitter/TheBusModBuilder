@@ -1,18 +1,18 @@
 # The Bus Mod Builder
 
-A tool to quickly rebuild mods for the game "The Bus".
+This tool allows you to build any mod you created inside the "The Bus Modding Editor" without opening it.
 
 
 ## DISCLAIMER - USE AT YOUR OWN RISK
 
-This software was made with my last 3 braincells and a little help of ChatGPT...
+**This tool was created independently and is not affiliated with TML Studios.** 
+If you run into any issues, feel free to reach out to me directly here for help. Thanks a bunch!
 
-**Use at your own risk** — if anything goes wrong, I am not responsible. Your computer, your problem. Happy Modding!
+This software was made with my last 3 braincells and a little help of ChatGPT so... **Use it at your own risk**
 
+If anything goes wrong, I am not responsible. You have been warned.
 
-## So how does this work ?
-
-This tool allows you to build any mods you created inside the The Bus Modding Editor. It also enables you to use multible build versions (like 'stable' or 'beta')
+Happy Modding!
 
 
 ## Requirements
@@ -26,7 +26,7 @@ Check out the developers dicord server, there you can find all the information y
 
 ## Config
 
-![](/media/Config.png)
+![](/media/Config.gif)
 
 When using the tool for the first time, you need to configure at least one "Version":
 
@@ -61,7 +61,7 @@ When using the tool for the first time, you need to configure at least one "Vers
 
 ## How to use the tool
 
-![](/media/BuildDone.png)
+![](/media/Build.gif)
 
 1. Select the Mod
 2. Select the Version
@@ -69,6 +69,8 @@ When using the tool for the first time, you need to configure at least one "Vers
 4. Wait - building a mod can take a while
 
 The process is done, when the red-ish `tkterminal$` at the bottom of the console window is shown.
+
+5. Start "The Bus" and test or upload your mod
 
 
 ## Nerd stuff - whats inside?
