@@ -41,6 +41,24 @@ When using the tool for the first time, you need to configure at least one "Vers
 5. (optional) you can add custom build arguments: click on the "Custom Args" button next to a config and write the arguments into the popup. - build arguments are stored separatly inside the 
 
 
+#### JSON Example
+
+```
+{
+    "versions": {
+        "Stable": {
+            "path": "V:/Epic/TheBusModdingEditor",
+            "extra_args": ""
+        },
+        "Beta": {
+            "path": "V:/Epic/PublicBeta",
+            "extra_args": ""
+        }
+    }
+}
+```
+
+
 ## How to use the tool
 
 ![](/media/BuildDone.png)
@@ -50,7 +68,7 @@ When using the tool for the first time, you need to configure at least one "Vers
 3. Hit the "Build Mod" Button
 4. Wait - building a mod can take a while
 
-The Build is done, when you see the red-ish `tkterminal$` at the bottom of the console window.
+The process is done, when the red-ish `tkterminal$` at the bottom of the console window is shown.
 
 
 ## Nerd stuff - whats inside?
