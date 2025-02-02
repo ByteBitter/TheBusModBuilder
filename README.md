@@ -39,7 +39,7 @@ When using the tool for the first time, you need to configure at least one "Vers
 
 4. Now you should see the config in the "Configuration" tab and there should be a `mod_config.json` file inside the folder where the tool is stored 
 
-5. (optional) you can add custom build arguments: click on the "Custom Args" button next to a config and write the arguments into the popup. - build arguments are stored separatly inside the 
+5. (optional) you can add custom build arguments: click on the "Custom Args" button next to a config and write the arguments into the popup. - build arguments are stored separatly for each created version
 
 
 #### JSON Example
