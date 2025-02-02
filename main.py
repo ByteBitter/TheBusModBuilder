@@ -3,7 +3,7 @@ import tkinter as tk
 from tkterminal import Terminal
 from tkinter import ttk, messagebox, filedialog, simpledialog
 from pathlib import Path
-import subprocess
+import webbrowser
 import os
 
 MODS_FOLDER = Path.home() / 'Documents' / 'The Bus' / 'Mods'
@@ -73,7 +73,7 @@ def edit_version(version_name):
 
 def open_folder(path):
     if os.path.exists(path):
-        os.system(f"explorer {path}")
+        webbrowser.open(path)
 
 def update_version_list():
     for widget in config_frame.winfo_children():
@@ -85,7 +85,7 @@ def update_version_list():
         
         tk.Label(frame, text=version_name, width=20, anchor="w").pack(side="left")
         tk.Label(frame, text=version_data["path"], anchor="w").pack(side="left")
-        tk.Button(frame, text="Edit", command=lambda v=version_name: edit_version(v)).pack(side="right", padx=5)
+        tk.Button(frame, text="Custom Args", command=lambda v=version_name: edit_version(v)).pack(side="right", padx=5)
         tk.Button(frame, text="Delete", command=lambda v=version_name: remove_version(v)).pack(side="right")
         tk.Button(frame, text="Open Folder", command=lambda p=version_data["path"]: open_folder(p)).pack(side="right", padx=5)
 
