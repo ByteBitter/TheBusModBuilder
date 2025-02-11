@@ -2,7 +2,7 @@
 
 This tool allows you to build any mod you created inside the "The Bus Modding Editor" without opening it.
 
-[Download here](https://github.com/ByteBitter/TheBusModBuilder/releases/tag/V001)
+[Download here](https://github.com/ByteBitter/TheBusModBuilder/releases/tag/V002)
 
 ## DISCLAIMER - USE AT YOUR OWN RISK
 
@@ -28,10 +28,9 @@ Check out the developers dicord server, there you can find all the information y
 ## Config
 
 ![](/media/Config.gif)
+When using the tool for the first time, you need to configure at least one "Version" and your "Mods" directory:
 
-When using the tool for the first time, you need to configure at least one "Version":
-
-1. Switch to the "Configuration" tab and click on "Add version"
+1. Switch to the "Configuration" tab and click on "Select Mods Folder" to select the Mods Folder and after that on "Add version"
 
 2. Enter a Name for the version - this can be anything you want ('stable', 'beta', ...)
 
@@ -55,7 +54,8 @@ When using the tool for the first time, you need to configure at least one "Vers
             "path": "V:/Epic/PublicBeta",
             "extra_args": ""
         }
-    }
+    },
+    "modsFolder": "C:/Users/User/Documents/The Bus/Mods"
 }
 ```
 
