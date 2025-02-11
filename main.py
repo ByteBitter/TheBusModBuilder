@@ -6,11 +6,10 @@ from pathlib import Path
 import webbrowser
 import os
 
-MODS_FOLDER = Path.home() / 'Documents' / 'The Bus' / 'Mods'
-print(MODS_FOLDER)
 CONFIG_FILE = "mod_config.json"
 
 def get_available_mods():
+    MODS_FOLDER = config["modsFolder"]
     if not os.path.exists(MODS_FOLDER):
         return []
     return [f for f in os.listdir(MODS_FOLDER) if os.path.isdir(os.path.join(MODS_FOLDER, f))]
@@ -34,6 +33,13 @@ def build_mod():
     print(command)
     terminal.clear()
     terminal.run_command(command)
+
+def update_mods_folder():
+    folder_selected = filedialog.askdirectory(title="Select Base Folder for Mods")
+    if folder_selected:
+        config["modsFolder"] = folder_selected
+        update_mod_dropdown()
+        save_config()
 
 def update_mod_dropdown():
     mods = get_available_mods()
@@ -124,6 +130,7 @@ def create_tabs():
     terminal = Terminal(main_tab, pady=5, padx=5, background="black")
     terminal.pack(expand=True, fill='both')
     
+    tk.Button(config_tab, text="Select Mods Folder", command=update_mods_folder).pack(pady=5)
     tk.Button(config_tab, text="Add Version", command=add_version).pack(pady=5)
     config_frame.pack(fill="both", expand=True)
     update_version_list()
@@ -132,11 +139,16 @@ def load_config():
     if not os.path.exists(CONFIG_FILE):
         return {"versions": {}}
     with open(CONFIG_FILE, "r") as f:
-        return json.load(f)
+        data = json.load(f)
+        if 'modsFolder' not in data:
+            data["modsFolder"] = str('Documents/The Bus/Mods')
+            print(data)
+        return data
 
 config = load_config()
 root = tk.Tk()
 root.title("The Bus Mod Builder")
 root.geometry("1500x700")
 create_tabs()
+save_config()
 root.mainloop()
