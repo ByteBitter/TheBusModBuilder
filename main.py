@@ -137,7 +137,7 @@ def create_tabs():
 
 def load_config():
     if not os.path.exists(CONFIG_FILE):
-        return {"versions": {}}
+        return {"versions": {}, "modsFolder":str('Documents/The Bus/Mods')}
     with open(CONFIG_FILE, "r") as f:
         data = json.load(f)
         if 'modsFolder' not in data:
