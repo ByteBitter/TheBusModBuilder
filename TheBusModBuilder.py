@@ -87,7 +87,7 @@ class ModBuilderVersion(object):
         tk.Label(frame, text="\tSpecial:", anchor="w").pack(side="left")
         tk.Checkbutton(frame, text="Build Roadmap", variable=self.BuildRoadmapVar, command=lambda : self.VersionUpdated()).pack(side=tk.LEFT)
         tk.Label(frame, text=f"\t{self.Path}", anchor="w").pack(side="left")
-        tk.Button(frame, text="Delete", command=lambda v=self.Name: self.RemoveVersion(v)).pack(side="right")
+        tk.Button(frame, text="Delete", command=lambda v=self.uuid: self.RemoveVersion(v)).pack(side="right")
         tk.Button(frame, text="Open Folder", command=lambda p=self.Path: self.OpenFolder(p)).pack(side="right", padx=5)
         tk.Button(frame, text="Custom Args", command=lambda : self.EditExtraArgs()).pack(side="right", padx=5)
         tk.Button(frame, text="Change Name", command=lambda : self.EditName()).pack(side="right", padx=5)

@@ -70,9 +70,9 @@ def removeVersion(version_id):
         del config["versions"][version_id]
         if version_id in versions:
             del versions[version_id]
-        saveConfig()
         updateVersionView()
         updateVersionsDropdown()
+        saveConfig()
 
 def updateVersionView():
     for widget in config_frame.winfo_children():
