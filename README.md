@@ -1,8 +1,10 @@
 # The Bus Mod Builder
 
-This tool allows you to build any mod you created inside the "The Bus Modding Editor" without opening it.
+This simple tool allows you to build any mod you created inside the "The Bus Modding Editor" without opening it.
 
-[Download V003 here](https://github.com/ByteBitter/TheBusModBuilder/releases/tag/V003.1)
+[Download V003 here](https://github.com/ByteBitter/TheBusModBuilder/releases/tag/V003.2)
+
+![Running](media/Running.png)
 
 ## DISCLAIMER - USE AT YOUR OWN RISK
 
@@ -42,6 +44,8 @@ When using the tool for the first time, you need to configure at least one "Vers
 6. (optional) you can add custom build arguments: click on the "Custom Args" button next to a config and write the arguments into the popup. - build arguments are stored separatly for each created version
 
 
+![Config](media/Config.png)
+
 #### JSON Example
 
 ```
@@ -76,14 +80,22 @@ When using the tool for the first time, you need to configure at least one "Vers
 4. Wait - building a mod can take a while
 
 The process is done, when the red-ish `tkterminal$` at the bottom of the console window is shown.
+![Done](media/BuildDone.png)
 
 5. Start "The Bus" and test or upload your mod
 
 
 ## Nerd stuff - whats inside?
 
+- Python
 - tkinter
 - tkterminal
+
+### Tools I used:
+- VS Code
+- auto-py-to-exe 
+
+
 
 
 

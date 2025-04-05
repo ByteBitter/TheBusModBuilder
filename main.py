@@ -17,20 +17,21 @@ def getAviableMods():
 
 def buildMod():
     mod_name = mod_var.get()
-    version_key = version_var.get()
+    version_index = version_dropdown.current()
+
+    version_key = list(versions.keys())[version_index]
     
     if not mod_name or version_key not in versions:
         messagebox.showerror("Error", "Invalid selection!")
         return
     
     version = versions[version_key]
-    print(version)
 
     command = version.GetBuildModCommand(mod_name)
     
     print(command)
     terminal.clear()
-    #terminal.run_command(command)
+    terminal.run_command(command)
 
 def updateModsFolder():
     folder_selected = filedialog.askdirectory(title="Select Base Folder for Mods")
