@@ -3,103 +3,91 @@ import tkinter as tk
 from tkterminal import Terminal
 from tkinter import ttk, messagebox, filedialog, simpledialog
 from pathlib import Path
-import webbrowser
+from uuid import uuid4
 import os
+from TheBusModBuilder import ModBuilderVersion
 
 CONFIG_FILE = "mod_config.json"
 
-def get_available_mods():
-    MODS_FOLDER = config["modsFolder"]
+def getAviableMods():
+    MODS_FOLDER = config.get("modsFolder","")
     if not os.path.exists(MODS_FOLDER):
         return []
     return [f for f in os.listdir(MODS_FOLDER) if os.path.isdir(os.path.join(MODS_FOLDER, f))]
 
-def build_mod():
+def buildMod():
     mod_name = mod_var.get()
     version_key = version_var.get()
     
-    if not mod_name or version_key not in config["versions"]:
+    if not mod_name or version_key not in versions:
         messagebox.showerror("Error", "Invalid selection!")
         return
     
-    version_data = config["versions"][version_key]
-    base_path = version_data["path"]
-    extra_args = version_data.get("extra_args", "")
+    version = versions[version_key]
+    print(version)
+
+    command = version.GetBuildModCommand(mod_name)
     
-    exe_path = os.path.join(base_path, "Engine/Binaries/Win64/UnrealEditor-Cmd.exe")
-    uproject = os.path.join(base_path, "Fernbus.uproject")
-    
-    command = f'"{exe_path}" "{uproject}" -activemod={mod_name} -run=CookModCommandlet {extra_args}'
     print(command)
     terminal.clear()
-    terminal.run_command(command)
+    #terminal.run_command(command)
 
-def update_mods_folder():
+def updateModsFolder():
     folder_selected = filedialog.askdirectory(title="Select Base Folder for Mods")
     if folder_selected:
         config["modsFolder"] = folder_selected
-        update_mod_dropdown()
-        save_config()
+        updateAviableModsDropdown()
+        saveConfig()
 
-def update_mod_dropdown():
-    mods = get_available_mods()
+def updateAviableModsDropdown():
+    mods = getAviableMods()
     mod_dropdown["values"] = mods
     if mods:
         mod_var.set(mods[0])
 
-def update_version_dropdown():
-    versions = list(config["versions"].keys())
-    version_dropdown["values"] = versions
-    if versions:
-        version_var.set(versions[0])
+def updateVersionsDropdown():
+    version_names = []
+    for version_name, version in versions.items():
+        version_names.append(version.getNameWithEnviroment())
+    version_dropdown["values"] = version_names
+    if version_names:
+        version_var.set(version_names[0])
 
-def add_version():
+def addVersion():
     version_name = simpledialog.askstring("Add Version", "Enter custom version name:")
     if version_name:
         folder_selected = filedialog.askdirectory(title="Select Base Folder for Version")
         if folder_selected:
-            config["versions"][version_name] = {"path": folder_selected, "extra_args": ""}
-            save_config()
-            update_version_list()
-            update_version_dropdown()
+            newid = str(uuid4())
+            newVersion = ModBuilderVersion(id=newid, tkinterRoot=root, updateView=updateVersionView, removeVersion=removeVersion, saveSettings=saveConfig, updateVersionDropdown=updateVersionsDropdown, settings={"name":version_name, "path":folder_selected})
+            versions[newid] = newVersion
+            saveConfig()
+            updateVersionView()
+            updateVersionsDropdown()
 
-def remove_version(version_name):
-    if version_name in config["versions"]:
-        del config["versions"][version_name]
-        save_config()
-        update_version_list()
-        update_version_dropdown()
+def removeVersion(version_id):
+    if version_id in config["versions"]:
+        del config["versions"][version_id]
+        if version_id in versions:
+            del versions[version_id]
+        saveConfig()
+        updateVersionView()
+        updateVersionsDropdown()
 
-def edit_version(version_name):
-    new_extra_args = simpledialog.askstring("Edit Extra Arguments", f"Enter extra arguments for {version_name}:", initialvalue=config["versions"].get(version_name, {}).get("extra_args", ""))
-    if new_extra_args is not None:
-        config["versions"][version_name]["extra_args"] = new_extra_args
-        save_config()
-        update_version_list()
-
-def open_folder(path):
-    if os.path.exists(path):
-        webbrowser.open(path)
-
-def update_version_list():
+def updateVersionView():
     for widget in config_frame.winfo_children():
         widget.destroy()
     
-    for version_name, version_data in config["versions"].items():
-        frame = tk.Frame(config_frame)
-        frame.pack(fill="x", pady=2)
-        
-        tk.Label(frame, text=version_name, width=20, anchor="w").pack(side="left")
-        tk.Label(frame, text=version_data["path"], anchor="w").pack(side="left")
-        tk.Button(frame, text="Custom Args", command=lambda v=version_name: edit_version(v)).pack(side="right", padx=5)
-        tk.Button(frame, text="Delete", command=lambda v=version_name: remove_version(v)).pack(side="right")
-        tk.Button(frame, text="Open Folder", command=lambda p=version_data["path"]: open_folder(p)).pack(side="right", padx=5)
+    for version_name, version in versions.items():
+        version.BuildVersionFrame(config_frame)
 
-def save_config():
+def saveConfig():
     with open(CONFIG_FILE, "w") as f:
+        for versionID, versionData in versions.items():
+            config["versions"][versionID] = versionData.GetSettingsDict()
         json.dump(config, f, indent=4)
 
-def create_tabs():
+def createTabs():
     global config_frame
     global terminal
     notebook = ttk.Notebook(root)
@@ -116,39 +104,50 @@ def create_tabs():
     mod_var = tk.StringVar()
     mod_dropdown = ttk.Combobox(main_tab, textvariable=mod_var)
     mod_dropdown.pack()
-    update_mod_dropdown()
+    updateAviableModsDropdown()
     
     tk.Label(main_tab, text="Select Version:").pack()
     global version_var, version_dropdown
     version_var = tk.StringVar()
     version_dropdown = ttk.Combobox(main_tab, textvariable=version_var)
     version_dropdown.pack()
-    update_version_dropdown()
+    updateVersionsDropdown()
     
-    tk.Button(main_tab, text="Build Mod", command=build_mod).pack(pady=5)
+    tk.Button(main_tab, text="Build Mod", command=buildMod).pack(pady=5)
 
     terminal = Terminal(main_tab, pady=5, padx=5, background="black")
     terminal.pack(expand=True, fill='both')
     
-    tk.Button(config_tab, text="Select Mods Folder", command=update_mods_folder).pack(pady=5)
-    tk.Button(config_tab, text="Add Version", command=add_version).pack(pady=5)
+    tk.Button(config_tab, text="Select Mods Folder", command=updateModsFolder).pack(pady=5)
+    tk.Button(config_tab, text="Add Version", command=addVersion).pack(pady=5)
     config_frame.pack(fill="both", expand=True)
-    update_version_list()
+    updateVersionView()
 
-def load_config():
+
+def loadVersionsandSettings():
     if not os.path.exists(CONFIG_FILE):
-        return {"versions": {}, "modsFolder":str('Documents/The Bus/Mods')}
+        return {"versions": {}, "modsFolder":str('Documents/The Bus/Mods')}, {}
+    
     with open(CONFIG_FILE, "r") as f:
         data = json.load(f)
+
+        versions = {}
+        for versionID, versionData in data["versions"].items():
+            newVersionObject = ModBuilderVersion(id=versionID, tkinterRoot=root, updateView=updateVersionView, removeVersion=removeVersion, saveSettings=saveConfig, updateVersionDropdown=updateVersionsDropdown, settings=versionData)
+            versions[versionID] = newVersionObject
+
         if 'modsFolder' not in data:
             data["modsFolder"] = str('Documents/The Bus/Mods')
             print(data)
-        return data
 
-config = load_config()
+        return data, versions
+    
+
+
 root = tk.Tk()
+config, versions = loadVersionsandSettings()
 root.title("The Bus Mod Builder")
 root.geometry("1500x700")
-create_tabs()
-save_config()
+createTabs()
+saveConfig()
 root.mainloop()
